@@ -115,7 +115,7 @@ function mdEventCalendarBuilderService($$mdEventCalendarUtil, $templateCache) {
     var row = createRowElement();
     monthElement.appendChild(row);
     var cellSize = options.cellHeight - 48;
-    var maxEvents = Math.floor(cellSize / 24);
+    var maxEvents = Math.floor(cellSize / 24) == 0 ? 2 : Math.floor(cellSize / 24);
 
 
     // days from last month
