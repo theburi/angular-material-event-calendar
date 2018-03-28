@@ -296,16 +296,6 @@ function mdEventCalendarBuilderService($$mdEventCalendarUtil, $templateCache) {
   }
 
 
-
-
-
-
-
-
-
-
-
-
   function month(options) {
     var calendarStartDate;
     var lastCalendarDayNum;
