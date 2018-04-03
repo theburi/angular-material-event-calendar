@@ -150,11 +150,12 @@ function mdEventCalendarBuilderService($$mdEventCalendarUtil, $templateCache) {
 
     lastCalendarDayNum = d;
     // fill in the rest of the row with next month
+    iterationDate.setMonth(iterationDate.getMonth() + 1);
     while (row.childNodes.length < 7) {
       if (dayOfWeek === 6) {
         lastCalendarDay = true;
-      }
-      iterationDate.setDate((d - lastCalendarDayNum) + 1);
+      }      
+      iterationDate.setDate(d - lastCalendarDayNum + 1);
       row.appendChild(createCellElement(getCellOptions(iterationDate, dayOfWeek, true)));
       dayOfWeek += 1;
       d += 1;
