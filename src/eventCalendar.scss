@@ -119,6 +119,7 @@ md-event-calendar {
           bottom: 0;
           left: 0;
           right: 0;
+          overflow: hidden;
 
           .md-event-calendar-create-link {
             align-self: center;
@@ -143,8 +144,8 @@ md-event-calendar {
 
           .md-event-calendar-cell-event-show-more-link {
             font-size: 13px;
-            padding: 4px;
-            padding-left: 8px;
+            padding: 0px;
+            padding-left: 0px;
             cursor: pointer;
           }
         }
@@ -162,15 +163,18 @@ md-event-calendar {
   .md-event-calendar-cell-event {
     font-size: 12px;
     min-height: 15px;
-    padding: 4px;
+    padding: 1px;
     cursor: pointer;
 
+
     &.md-single {
-      margin: 4px;
+      margin: 1px;
       border-radius: 2px;
       text-overflow: ellipsis;
       white-space: nowrap;
       overflow: hidden;
+      position: absolute;
+      bottom: 1px;
     }
 
     &.md-start {
@@ -243,7 +247,7 @@ md-event-calendar {
 
     .md-event-calendar-cell-event-time {
       font-weight: 500;
-      padding-right: 6px;
+      padding-right: 4px;
       pointer-events: none;
     }
 

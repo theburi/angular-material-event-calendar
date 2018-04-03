@@ -235,29 +235,37 @@ function mdEventCalendarBuilderService($$mdEventCalendarUtil, $templateCache) {
     var hasEvents = false;
     var matchingEvents = getEventsInRange(options.date, options.events);
     matchingEvents = setEventPlaces(matchingEvents, options.dayOfWeek);
-    matchingEvents.every(function (eventItem, pos) {
-      var type = getEventDisplayType(eventItem, options);
-      var placeDiff = eventItem.$$place - place;
-      hasEvents = true;
-      place = eventItem.$$place + 1;
-      i = 0;
-      // add spacer items for overflow events from last day
-      while (i < placeDiff) {
-        if (place >= options.maxEvents) {
-          cellContent.appendChild(createShowMore(matchingEvents.length - pos, options.date));
-          return false;
-        }
-        cellContent.appendChild(createEventSpacerElement());
-        i += 1;
-      }
+    if (matchingEvents.length > 1) {
+      createShowMore(matchingEvents.length, options.date);
+    } else if (matchingEvents.length == 1) {
+      var type = getEventDisplayType(matchingEvents[0], options);
 
-      if (place >= options.maxEvents) {
-        cellContent.appendChild(createShowMore(matchingEvents.length - pos, options.date));
-        return false;
-      }
-      cellContent.appendChild(createEventElement(type, eventItem, options));
-      return true;
-    });
+      cellContent.appendChild(createEventElement(type, matchingEvents[0], options));
+    }
+
+    // matchingEvents.every(function (eventItem, pos) {
+    //   var type = getEventDisplayType(eventItem, options);
+    //   var placeDiff = eventItem.$$place - place;
+    //   hasEvents = true;
+    //   place = eventItem.$$place + 1;
+    //   i = 0;
+    //   // add spacer items for overflow events from last day
+    //   while (i < placeDiff) {
+    //     if (place >= options.maxEvents) {
+    //       cellContent.appendChild(createShowMore(matchingEvents.length - pos, options.date));
+    //       return false;
+    //     }
+    //     cellContent.appendChild(createEventSpacerElement());
+    //     i += 1;
+    //   }
+
+    //   if (place >= options.maxEvents) {
+    //     cellContent.appendChild(createShowMore(matchingEvents.length - pos, options.date));
+    //     return false;
+    //   }
+    //   cellContent.appendChild(createEventElement(type, eventItem, options));
+    //   return true;
+    // });
 
     if (hasEvents === true) {
       cellContent.classList.add('md-has-events');
