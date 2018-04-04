@@ -295,8 +295,8 @@ function mdEventCalendarBuilderService($$mdEventCalendarUtil, $templateCache) {
     eventElement.setAttribute('md-event-id', hash);
     eventElement.classList.add('md-event-calendar-cell-event');
     eventElement.classList.add('md-'+type.className);
+    
     if (eventItem.customClass) { eventElement.classList.add(eventItem.customClass); }
-
     if (type.hasLabel === true) {
       // do not show time for allDay events
       if (type.allDay !== true) {
