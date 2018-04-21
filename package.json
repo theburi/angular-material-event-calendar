@@ -1,7 +1,7 @@
 {
   "name": "angular-material-event-calendar",
-  "version": "0.1.10",
-  "author": "Ben Rubin",
+  "version": "0.1.11",
+  "author": "Ben Rubn",
   "description": "Angular material event calander component",
   "keywords": "material, material-design, design, angular, component, calendar, event, md",
   "license": "MIT",

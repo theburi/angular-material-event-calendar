@@ -221,7 +221,7 @@ var nextId = 0;
  * @name $$mdEventCalendarBuilder
  * @module material.components.eventCalendar
  **/
- /*@ngInject*/
+/*@ngInject*/
 function mdEventCalendarBuilderService($$mdEventCalendarUtil, $templateCache) {
   var service = {
     month: month,
@@ -233,7 +233,7 @@ function mdEventCalendarBuilderService($$mdEventCalendarUtil, $templateCache) {
 
   function showMore(opts) {
     var date = opts.date;
-    var selected = opts.selected  || [];
+    var selected = opts.selected || [];
     var events = opts.events ? filterEventsOnDay(date, opts.events) : [];
     var labelProperty = opts.labelProperty;
     var showMoreBody = document.createDocumentFragment();
@@ -263,13 +263,13 @@ function mdEventCalendarBuilderService($$mdEventCalendarUtil, $templateCache) {
       };
 
       if (isStartThisDay && isEndThisDay) {
-        eventElement = createEventElement({className: 'single', hasLabel: true}, item, eventOptions);
+        eventElement = createEventElement({ className: 'single', hasLabel: true }, item, eventOptions);
       } else if (isStartThisDay) {
-        eventElement = createEventElement({className: 'start-right', hasLabel: true}, item, eventOptions);
+        eventElement = createEventElement({ className: 'start-right', hasLabel: true }, item, eventOptions);
       } else if (isEndThisDay) {
-        eventElement = createEventElement({className: 'end-left', hasLabel: true}, item, eventOptions);
+        eventElement = createEventElement({ className: 'end-left', hasLabel: true }, item, eventOptions);
       } else {
-        eventElement = createEventElement({className: 'continue', hasLabel: true}, item, eventOptions);
+        eventElement = createEventElement({ className: 'continue', hasLabel: true }, item, eventOptions);
       }
 
       content.appendChild(eventElement);
@@ -279,8 +279,8 @@ function mdEventCalendarBuilderService($$mdEventCalendarUtil, $templateCache) {
     var bounds = opts.cell.getBoundingClientRect();
     var cellTop = opts.cell.offsetTop;
     var cellLeft = opts.cell.offsetLeft;
-    container.style.top = cellTop+'px';
-    container.style.left = cellLeft+'px';
+    container.style.top = cellTop + 'px';
+    container.style.left = cellLeft + 'px';
 
     return showMoreBody;
   }
@@ -289,7 +289,7 @@ function mdEventCalendarBuilderService($$mdEventCalendarUtil, $templateCache) {
   function filterEventsOnDay(date, events) {
     return !events || !events.length ? [] : events.filter(function (item) {
       return $$mdEventCalendarUtil.isDateWithinRange(date, item.start, item.end || item.start);
-    }).sort(function(a, b) {
+    }).sort(function (a, b) {
       a = new Date(a.start);
       b = new Date(b.start);
       return a > b ? 1 : a < b ? -1 : 0;
@@ -311,7 +311,7 @@ function mdEventCalendarBuilderService($$mdEventCalendarUtil, $templateCache) {
     var numberOfDaysInMonth = $$mdEventCalendarUtil.getNumberOfDaysInMonth(date);
     var events = filterCurrentCalendar(date, options.events);
     events.forEach(cleanEvent);
-    var selected = options.selected  || [];
+    var selected = options.selected || [];
     var monthElement = createMonthElement();
     var row = createRowElement();
     monthElement.appendChild(row);
@@ -365,7 +365,7 @@ function mdEventCalendarBuilderService($$mdEventCalendarUtil, $templateCache) {
     while (row.childNodes.length < 7) {
       if (dayOfWeek === 6) {
         lastCalendarDay = true;
-      }      
+      }
       iterationDate.setDate(d - lastCalendarDayNum + 1);
       row.appendChild(createCellElement(getCellOptions(iterationDate, dayOfWeek, true)));
       dayOfWeek += 1;
@@ -389,7 +389,8 @@ function mdEventCalendarBuilderService($$mdEventCalendarUtil, $templateCache) {
         selected: selected, // array of selected events. from ngModel
         labelProperty: options.labelProperty, // name of the label property. default: title
         showCreateLink: options.showCreateLink, // show create link on hover of day cell
-        createLinkText: options.createLinkText // text to show in Create link
+        createLinkText: options.createLinkText, // text to show in Create link
+        cellSize: cellSize // size of the Cell
       };
     }
   }
@@ -413,35 +414,52 @@ function mdEventCalendarBuilderService($$mdEventCalendarUtil, $templateCache) {
 
     var cellContent = document.createElement('div');
     cellContent.setAttribute('md-create-event', '');
-    cellContent.classList.add('md-event-calendar-month-cell-content');
-    cell.appendChild(cellContent);
 
     var cellHeader = document.createElement('div');
-    cellHeader.setAttribute('md-create-event', '');
-    cellHeader.classList.add('layout-row');
-    cellContent.appendChild(cellHeader);
-
-    if (options.showCreateLink === true) {
-      var createLink = document.createElement('div');
-      createLink.setAttribute('md-create-event', '');
-      createLink.classList.add('md-event-calendar-create-link');
-      createLink.textContent = options.createLinkText;
-      cellHeader.appendChild(createLink);
-    }
-    
     var dateLabel = document.createElement('div');
-    dateLabel.setAttribute('md-create-event', '');
-    dateLabel.classList.add('md-event-calendar-cell-data-label');
-    dateLabel.textContent = $$mdEventCalendarUtil.dates[options.date.getDate()];
-    cellHeader.appendChild(dateLabel);
 
+    if (options.cellSize > 30) {
+      cellContent.classList.add('md-event-calendar-month-cell-content');
 
+      cell.appendChild(cellContent);
+
+      cellHeader.setAttribute('md-create-event', '');
+      cellHeader.classList.add('layout-row');
+      cellContent.appendChild(cellHeader);
+
+      if (options.showCreateLink === true) {
+        var createLink = document.createElement('div');
+        createLink.setAttribute('md-create-event', '');
+        createLink.classList.add('md-event-calendar-create-link');
+        createLink.textContent = options.createLinkText;
+        cellHeader.appendChild(createLink);
+      }
+
+      dateLabel.setAttribute('md-create-event', '');
+      dateLabel.classList.add('md-event-calendar-cell-data-label');
+      dateLabel.textContent = $$mdEventCalendarUtil.dates[options.date.getDate()];
+      cellHeader.appendChild(dateLabel);
+    }
+    else {
+      cellContent.classList.add('md-event-calendar-month-cell-content');
+
+      cell.appendChild(cellContent);
+
+      cellHeader.setAttribute('md-create-event', '');
+      cellHeader.classList.add('layout-row');
+      cellContent.appendChild(cellHeader);
+
+      dateLabel.setAttribute('md-create-event', '');
+      dateLabel.classList.add('md-event-calendar-cell-data-label');
+      dateLabel.textContent = $$mdEventCalendarUtil.dates[options.date.getDate()];
+      cellHeader.appendChild(dateLabel);
+
+    }
 
     createEventElements(cellContent, options);
 
     return cell;
   }
-
 
 
   function createEventElements(cellContent, options) {
@@ -455,7 +473,7 @@ function mdEventCalendarBuilderService($$mdEventCalendarUtil, $templateCache) {
     } else if (matchingEvents.length == 1) {
       var type = getEventDisplayType(matchingEvents[0], options);
 
-      cellContent.appendChild(createEventElement(type, matchingEvents[0], options));
+      createEventElement(cellContent, type, matchingEvents[0], options);
     }
 
     // matchingEvents.every(function (eventItem, pos) {
@@ -491,7 +509,7 @@ function mdEventCalendarBuilderService($$mdEventCalendarUtil, $templateCache) {
   function createShowMore(num, date) {
     var showMoreElement = document.createElement('div');
     showMoreElement.classList.add('md-event-calendar-cell-event-show-more-link');
-    showMoreElement.textContent = num+' more';
+    showMoreElement.textContent = num + ' more';
     showMoreElement.setAttribute('md-show-more', date.toISOString());
     return showMoreElement;
   }
@@ -503,37 +521,55 @@ function mdEventCalendarBuilderService($$mdEventCalendarUtil, $templateCache) {
     return spacer;
   }
 
-  function createEventElement(type, eventItem, options) {
-    var hash = getHashValue(eventItem);
+  function createEventElement(cellContent, type, eventItem, options) {
+
     var eventElement = document.createElement('div');
-    eventElement.setAttribute('md-event-id', hash);
-    eventElement.classList.add('md-event-calendar-cell-event');
-    eventElement.classList.add('md-'+type.className);
-    
-    if (eventItem.customClass) { eventElement.classList.add(eventItem.customClass); }
-    if (type.hasLabel === true) {
-      // do not show time for allDay events
-      if (type.allDay !== true) {
-        var dateLabelTime = document.createElement('span');
-        dateLabelTime.classList.add('md-event-calendar-cell-event-time');
-        dateLabelTime.textContent = $$mdEventCalendarUtil.formatEventTime(eventItem.start);
-        eventElement.appendChild(dateLabelTime);
+    var hash = getHashValue(eventItem); 
+
+    if (options.cellSize > 30) {
+
+      eventElement.setAttribute('md-event-id', hash);
+      eventElement.classList.add('md-event-calendar-cell-event');
+      eventElement.classList.add('md-' + type.className);
+
+      if (eventItem.customClass) { eventElement.classList.add(eventItem.customClass); }
+      if (type.hasLabel === true) {
+        // do not show time for allDay events
+        if (type.allDay !== true) {
+          var dateLabelTime = document.createElement('span');
+          dateLabelTime.classList.add('md-event-calendar-cell-event-time');
+          dateLabelTime.textContent = $$mdEventCalendarUtil.formatEventTime(eventItem.start);
+          eventElement.appendChild(dateLabelTime);
+        }
+
+        var dateLabelText = document.createElement('span');
+        dateLabelText.textContent = eventItem[options.labelProperty];
+        eventElement.appendChild(dateLabelText);
       }
 
-      var dateLabelText = document.createElement('span');
-      dateLabelText.textContent = eventItem[options.labelProperty];
-      eventElement.appendChild(dateLabelText);
+      options.selected.every(function (sel) {
+        if (sel.$$mdEventId !== undefined && sel.$$mdEventId === eventItem.$$mdEventId) {
+          eventElement.classList.add('md-selected');
+          return false;
+        }
+        return true;
+      });
+      cellContent.appendChild(eventElement);
+
+    } else {
+      cellContent.firstChild.firstChild.setAttribute('md-event-id', hash);
+      cellContent.firstChild.firstChild.classList.add('xs');
+      
+      options.selected.every(function (sel) {
+        if (sel.$$mdEventId !== undefined && sel.$$mdEventId === eventItem.$$mdEventId) {
+          cellContent.firstChild.firstChild.classList.add('md-selected');
+          return false;
+        }
+        return true;
+      });
+
     }
-
-    options.selected.every(function (sel) {
-      if (sel.$$mdEventId !== undefined && sel.$$mdEventId === eventItem.$$mdEventId) {
-        eventElement.classList.add('md-selected');
-        return false;
-      }
-      return true;
-    });
-
-    return eventElement;
+    
   }
 
 
@@ -558,37 +594,37 @@ function mdEventCalendarBuilderService($$mdEventCalendarUtil, $templateCache) {
       className = 'single';
       hasLabel = true;
 
-    // starts today on last day of week
+      // starts today on last day of week
     } else if (isStartThisDay && options.dayOfWeek === 6) {
       className = 'start-right';
       hasLabel = true;
 
-    // starts today
+      // starts today
     } else if (isStartThisDay) {
       className = 'start';
       hasLabel = true;
 
-    // ends on sunday
+      // ends on sunday
     } else if (isEndThisDay && options.dayOfWeek === 0) {
       className = 'end-left';
       hasLabel = true;
 
-    // last day of event
+      // last day of event
     } else if (isEndThisDay) {
       className = 'end';
       hasLabel = options.isFirstDay; // add label if event is continuing from last month
 
-    // continuation on sunday
+      // continuation on sunday
     } else if (options.dayOfWeek === 0) {
       className = 'continue-left';
       hasLabel = true;
 
-    // continue on sat
+      // continue on sat
     } else if (options.dayOfWeek === 6) {
       className = 'continue-right';
       hasLabel = false;
 
-    // continuation
+      // continuation
     } else {
       className = 'continue';
       hasLabel = false;
@@ -623,12 +659,12 @@ function mdEventCalendarBuilderService($$mdEventCalendarUtil, $templateCache) {
     });
 
     // fill in places that have not been set
-    sorted.forEach(function(item) {
+    sorted.forEach(function (item) {
       if (item.$$place === undefined) { item.$$place = getPlace(); }
     });
 
     // sort on places
-    return sorted.sort(function(a, b) {
+    return sorted.sort(function (a, b) {
       if (a.$$place > b.$$place) { return 1; }
       if (a.$$place < b.$$place) { return -1; }
       return 0;
@@ -657,7 +693,7 @@ function mdEventCalendarBuilderService($$mdEventCalendarUtil, $templateCache) {
     $$mdEventCalendarUtil.days.forEach(function (name) {
       var dayHeader = document.createElement('div');
       dayHeader.classList.add('md-event-calendar-month-cell-header');
-      dayHeader.textContent = name.slice(0,3).toLowerCase();
+      dayHeader.textContent = name.slice(0, 3).toLowerCase();
       headerRow.appendChild(dayHeader);
     });
 
@@ -684,7 +720,7 @@ function mdEventCalendarBuilderService($$mdEventCalendarUtil, $templateCache) {
       if (!$$mdEventCalendarUtil.isValidDate(item.end)) { return false; }
       if ($$mdEventCalendarUtil.isDateWithinRange(item.end, start, end)) { return true; }
       return false;
-    }).sort(function(a, b) {
+    }).sort(function (a, b) {
       a = new Date(a.start);
       b = new Date(b.start);
       return a > b ? 1 : a < b ? -1 : 0;
