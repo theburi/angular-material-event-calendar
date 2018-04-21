@@ -194,7 +194,8 @@ md-event-calendar .md-event-calendar-cell-event {
     white-space: nowrap;
     overflow: hidden;
     position: absolute;
-    bottom: 1px; }
+    bottom: 1px;
+    width: 100%; }
   md-event-calendar .md-event-calendar-cell-event.md-start {
     margin: 4px 0 4px 4px;
     border-radius: 2px 0 0 2px;

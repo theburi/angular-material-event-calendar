@@ -158,6 +158,7 @@ function eventCalendarDirective($injector, $parse) {
     vm.yearDisplay = vm.date.getFullYear();
     vm.isTodayDisabled = true;
     vm.showCreateLink = $attrs.mdShowCreateLink !== undefined && $attrs.mdShowCreateLink !== 'false';
+    vm.createLinkText = $attrs.mdCreateLinkText == undefined ? '+' : $attrs.mdCreateLinkText ;
     vm.nextMonth = nextMonth;
     vm.previousMonth = previousMonth;
     vm.selectEvent = selectEvent;
@@ -387,7 +388,8 @@ function mdEventCalendarBuilderService($$mdEventCalendarUtil, $templateCache) {
         maxEvents: maxEvents, // max events that can be displayed in a day cell. based on cell size
         selected: selected, // array of selected events. from ngModel
         labelProperty: options.labelProperty, // name of the label property. default: title
-        showCreateLink: options.showCreateLink // show create link on hover of day cell
+        showCreateLink: options.showCreateLink, // show create link on hover of day cell
+        createLinkText: options.createLinkText // text to show in Create link
       };
     }
   }
@@ -419,19 +421,21 @@ function mdEventCalendarBuilderService($$mdEventCalendarUtil, $templateCache) {
     cellHeader.classList.add('layout-row');
     cellContent.appendChild(cellHeader);
 
+    if (options.showCreateLink === true) {
+      var createLink = document.createElement('div');
+      createLink.setAttribute('md-create-event', '');
+      createLink.classList.add('md-event-calendar-create-link');
+      createLink.textContent = options.createLinkText;
+      cellHeader.appendChild(createLink);
+    }
+    
     var dateLabel = document.createElement('div');
     dateLabel.setAttribute('md-create-event', '');
     dateLabel.classList.add('md-event-calendar-cell-data-label');
     dateLabel.textContent = $$mdEventCalendarUtil.dates[options.date.getDate()];
     cellHeader.appendChild(dateLabel);
 
-    if (options.showCreateLink === true) {
-      var createLink = document.createElement('div');
-      createLink.setAttribute('md-create-event', '');
-      createLink.classList.add('md-event-calendar-create-link');
-      createLink.textContent = 'Create';
-      cellHeader.appendChild(createLink);
-    }
+
 
     createEventElements(cellContent, options);
 
@@ -840,6 +844,7 @@ function eventCalendarMonthDirective($$mdEventCalendarBuilder, $window, $$rAF, $
         selected: mdEventCalendarCtrl.selectedEvents,
         labelProperty: mdEventCalendarCtrl.labelProperty,
         showCreateLink: mdEventCalendarCtrl.showCreateLink,
+        createLinkText: mdEventCalendarCtrl.createLinkText,
         cellHeight: cellHeight
       });
       element.empty();

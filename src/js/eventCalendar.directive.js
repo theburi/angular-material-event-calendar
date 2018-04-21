@@ -102,6 +102,7 @@ function eventCalendarDirective($injector, $parse) {
     vm.yearDisplay = vm.date.getFullYear();
     vm.isTodayDisabled = true;
     vm.showCreateLink = $attrs.mdShowCreateLink !== undefined && $attrs.mdShowCreateLink !== 'false';
+    vm.createLinkText = $attrs.mdCreateLinkText == undefined ? '+' : $attrs.mdCreateLinkText ;
     vm.nextMonth = nextMonth;
     vm.previousMonth = previousMonth;
     vm.selectEvent = selectEvent;
